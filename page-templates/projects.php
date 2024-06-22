@@ -57,18 +57,27 @@ get_header();
         ?>
     </div>
 
-    <div class="w-4/5 m-auto">
-        <div class="flex w-1/3 m-auto mt-10">
-            <div class="border-2 w-1/5 text-center"><a href="#" class="text-xl"><-</a></div>
-            <div class="border-2 w-1/5 text-center"><a href="#" class="text-xl">1</a></div>
-            <div class="border-2 w-1/5 text-center"><a href="#" class="text-xl">2</a></div>
-            <div class="border-2 w-1/5 text-center"><a href="#" class="text-xl">3</a></div>
-            <div class="border-2 w-1/5 text-center"><a href="#" class="text-xl">...</a></div>
-            <div class="border-2 w-1/5 text-center"><a href="#" class="text-xl">10</a></div>
-            <div class="border-2 w-1/5 text-center"><a href="#" class="text-xl">11</a></div>
-            <div class="border-2 w-1/5 text-center"><a href="#" class="text-xl">12</a></div>
-            <div class="border-2 w-1/5 text-center"><a href="#" class="text-xl">-></a></div>
-        </div>
+    <div class="w-4/5 m-auto mt-10">
+        <?php
+        $big = 999999999;
+        $pagination = paginate_links(array(
+            'base'      => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
+            'format'    => '?paged=%#%',
+            'current'   => max(1, get_query_var('paged')),
+            'total'     => $projects->max_num_pages,
+            'type'      => 'array',
+            'prev_text' => '<-',
+            'next_text' => '->',
+        ));
+
+        if (!empty($pagination)) {
+            echo '<div class="flex w-1/3 m-auto mt-10">';
+            foreach ($pagination as $page) {
+                echo '<div class="border-2 w-1/5 text-center"><a href="#" class="text-xl">' . $page . '</a></div>';
+            }
+            echo '</div>';
+        }
+        ?>
     </div>
 </section>
 
